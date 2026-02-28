@@ -1,0 +1,11 @@
+{
+  "levelId": "sample1",
+  "imageSrc": "/levels/sample1.png",
+  "difficulty": "easy",
+  "missingItemId": "item1",
+  "items": [
+    { "id": "item1", "label": "Item 1", "bbox": { "x": 220, "y": 160, "w": 140, "h": 120 } },
+    { "id": "item2", "label": "Item 2", "bbox": { "x": 520, "y": 260, "w": 160, "h": 140 } },
+    { "id": "item3", "label": "Item 3", "bbox": { "x": 340, "y": 420, "w": 120, "h": 120 } }
+  ]
+}
