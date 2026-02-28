@@ -7,8 +7,18 @@ import { CanvasScene } from "./CanvasScene";
 export function GameView() {
   const [engine] = useState(() => new GameEngine(LEVELS));
   const [now, setNow] = useState(() => performance.now());
+  const [imgReady, setImgReady] = useState(false);
   const s = engine.state;
   const level = engine.getLevel();
+  // preload level image
+  useEffect(() => {
+    if (!level) return;
+    setImgReady(false);
+    const img = new Image();
+    img.src = level.imageSrc;
+    img.onload = () => setImgReady(true);
+    img.onerror = () => setImgReady(false);
+  }, [level?.imageSrc]);
 
   // start game once
   useEffect(() => {
@@ -25,7 +35,9 @@ export function GameView() {
   useEffect(() => {
     const id = window.setInterval(() => {
       const t = performance.now();
-      engine.tick(t);
+      if (imgReady) {
+        engine.tick(t);
+      }
       setNow(t);
     }, 50);
     return () => window.clearInterval(id);
@@ -54,6 +66,12 @@ export function GameView() {
         </div>
       </header>
 
+      {!imgReady && (
+        <div style={{ marginBottom: 10, opacity: 0.8 }}>
+          Waiting for image to load…
+        </div>
+      )}
+      
       <CanvasScene
         level={level}
         phase={(s.phase === "study" || s.phase === "guess" || s.phase === "result") ? s.phase : "study"}
